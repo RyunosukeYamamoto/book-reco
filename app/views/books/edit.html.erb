@@ -1,0 +1,33 @@
+<h3><%= @book.title %>の編集ページ</h3>
+
+
+  <div>
+    <%= form_with(model: @book, local: true) do |f| %>
+      <%= render 'layouts/error_messages', model: f.object %>
+      <% if @book.code.blank? %>
+        <div class="form-group">
+          <%= f.text_field :title, class: 'form-control' %>
+        </div>
+      <% end %>
+      <div class="form-group">
+        <%= f.label :impression, '感想' %>
+        <%= f.text_area :impression, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.select :status, [["読みたい", "読みたい"], ["読書中", "読書中"], ["読了", "読了"]], class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :date, '読了日' %>
+        <%= f.date_select :date, include_blank: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :page, '総ページ数' %>
+        <%= f.number_field :page, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :nowpage, '現在のページ数' %>
+        <%= f.number_field :nowpage, class: 'form-control' %>
+      </div>
+      <%= f.submit '登録', class: 'btn btn-success' %>
+    <% end %>
+  </div>

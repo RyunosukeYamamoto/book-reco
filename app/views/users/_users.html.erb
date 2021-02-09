@@ -1,0 +1,15 @@
+<% if users.any? %>
+  <ul class="list-unstyled">
+    <% users.each do |user| %>
+      <li class="media">
+        <div class="media-body">
+          <div>
+            <%= link_to user.name, user_path(user) %>
+          </div>
+          <%= render 'relationships/follow_button', user: user %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <%= paginate users %>
+<% end %>

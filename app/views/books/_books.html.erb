@@ -1,0 +1,19 @@
+<% if books.any? %>
+  <ul>
+    <% books.each do |book| %>
+      <li>
+        <div class="post">
+          <%= link_to book.user.name, book.user %><br>
+          <% if book.img.present? %>
+            <img src="<%= book.img %>" width="40" vspace="2">
+          <% end %>
+          <%= link_to book.title, book %><br>
+          <% if current_user == book.user %>
+            <%= link_to "削除", book, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <%= paginate books %>
+<% end %>

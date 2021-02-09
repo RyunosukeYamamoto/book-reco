@@ -1,0 +1,12 @@
+<%= form_with(url: {controller: 'users', action: 'index' }, method: :get, local: true) do |f| %>
+  <div class="input-group">
+    <%= f.text_field :search, class: "form-control", placeholder: "ユーザー検索" %>
+    <span class="input-group-btn">
+      <%= f.submit '探す', class: 'form-control btn btn-primary' %>
+    </span>
+  </div>
+<% end %>
+
+
+
+<%= render 'users', users: @users %>
