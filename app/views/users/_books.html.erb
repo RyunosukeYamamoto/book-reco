@@ -20,8 +20,8 @@
   </div>
 
   <div class="col-sm-4">
-    <h4>今週(<%= @this_sunday %>~<%= @next_saturday %>)の読了本は<%= @this_week_books.count %>冊です</h4>
-    <%= render 'books/books', books: @this_week_books %>
+    <h4>今月(<%= @this_month %>月)の読了本は<%= @this_month_books.count %>冊です</h4>
+    <%= render 'books/books', books: @this_month_books %>
   </div>
 </div>
 

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books.where(status: ['読書中', nil]).order(id: :desc).page(params[:page]).per(15)
     counts(@user)
-    this_week_books(@user)
+    this_month_books(@user)
   end
 
   def new
@@ -54,14 +54,23 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books.where(status: '読みたい').order(id: :desc).page(params[:page]).per(15)
     counts(@user)
-    this_week_books(@user)
+    this_month_books(@user)
   end
   
   def read
     @user = User.find(params[:id])
     @books = @user.books.where(status: '読了').order(id: :desc).page(params[:page]).per(15)
     counts(@user)
-    this_week_books(@user)
+    this_month_books(@user)
+  end
+  
+  def ranking
+    rank_hash = {}
+    User.all.each do |user|
+      this_month_books(user)
+      rank_hash[user.name] = @this_month_books.count
+    end
+    @rank_hash = rank_hash.sort_by { |_, v| -v }.to_h
   end
   
   private
@@ -70,11 +79,11 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
   
-  def this_week_books(user)
-    this_day = Date.today
-    @this_sunday = this_day - this_day.wday # 今週の日曜日
-    @next_saturday = this_day - this_day.wday + 6 # 次の土曜日
+  def this_month_books(user)
+    first_of_month = Date.today.beginning_of_month
+    end_of_month = Date.today.end_of_month
+    @this_month = Date.today.month
     
-    @this_week_books = user.books.where(date: @this_sunday..@next_saturday).order(id: :desc).page(params[:page]).per(15)
+    @this_month_books = user.books.where(date: first_of_month..end_of_month).order(id: :desc).page(params[:page]).per(15)
   end
 end

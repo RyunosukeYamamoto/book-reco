@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       get :will_read
       get :read
     end
+    collection do
+      get :ranking
+    end
   end
   
   resources :books, only: [:show, :create, :edit, :update, :destroy, :new] do
