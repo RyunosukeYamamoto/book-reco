@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :require_user_logged_in, except: [:new, :create]
+  
   def index
     if params[:search].present?
       @users = User.where(name: params[:search]).order(id: :desc).page(params[:page]).per(15)
@@ -73,10 +75,23 @@ class UsersController < ApplicationController
     @rank_hash = rank_hash.sort_by { |_, v| -v }.to_h
   end
   
+  def edit
+  end
+  
+  def update
+    if current_user.update(user_params)
+      flash[:success] = 'ユーザー情報が編集されました'
+      redirect_to current_user
+    else
+      flash.now[:danger] = 'ユーザー情報は編集されませんでした'
+      render :edit
+    end
+  end
+  
   private
   
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :now_password)
   end
   
   def this_month_books(user)

@@ -20,6 +20,9 @@
   </div>
 
   <div class="col-sm-4">
+    <% if user == current_user %>
+      <h4><%= link_to 'ユーザー情報を編集', edit_user_path(current_user) %></h4>
+    <% end %>
     <h4>今月(<%= @this_month %>月)の読了本は<%= @this_month_books.count %>冊です</h4>
     <%= render 'books/books', books: @this_month_books %>
   </div>
