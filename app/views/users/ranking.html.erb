@@ -1,8 +1,11 @@
 <h4>今月の読了数ランキング(<%= @this_month %>月)</h4>
 <% count = 0 %>
-<% @rank_hash.each do |name, book_count| %>
+<% @rank_hash.each do |user, book_count| %>
   <% count += 1 unless book_count == @one_above_count %>
-  <h5><%= count %>位|<%= name %>さん&gt;<%= book_count %>冊</h5>
+  <h5><%= count %>位|<%= link_to user.name, user_path(user) %>さん&gt;<%= book_count %>冊</h5>
   <br>
+  <% if count >= 10 %>
+    <% break %>
+  <% end %>
   <% @one_above_count = book_count %>
 <% end %>

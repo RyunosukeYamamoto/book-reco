@@ -68,7 +68,7 @@ class UsersController < ApplicationController
     rank_hash = {}
     User.all.each do |user|
       this_month_books(user)
-      rank_hash[user.name] = @this_month_books.count
+      rank_hash[user] = @this_month_books.count
     end
     @rank_hash = rank_hash.sort_by { |_, v| -v }.to_h
   end
