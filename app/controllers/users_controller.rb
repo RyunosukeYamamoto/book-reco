@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_user_logged_in, except: [:new, :create]
+  before_action :set_user, only: [:show, :followings, :followers, :will_read, :read]
   
   def index
     if params[:search].present?
@@ -7,13 +8,6 @@ class UsersController < ApplicationController
     else
       @users = User.order(id: :desc).page(params[:page]).per(15)
     end
-  end
-
-  def show
-    @user = User.find(params[:id])
-    @books = @user.books.where(status: ['読書中', nil]).order(id: :desc).page(params[:page]).per(15)
-    counts(@user)
-    this_month_books(@user)
   end
 
   def new
@@ -33,6 +27,19 @@ class UsersController < ApplicationController
     end
   end
   
+  def edit
+  end
+  
+  def update
+    if current_user.update(user_params)
+      flash[:success] = 'ユーザ情報が編集されました'
+      redirect_to current_user
+    else
+      flash[:danger] = 'ユーザー情報は編集されませんでした'
+      redirect_to edit_user_url(current_user)
+    end
+  end
+  
   def destroy
     if current_user == User.find(params[:id])
       current_user.destroy
@@ -41,30 +48,27 @@ class UsersController < ApplicationController
     redirect_to root_url
   end
   
-  def followings
-    @user = User.find(params[:id])
-    @followings = @user.followings.page(params[:page]).per(15)
-    counts(@user)
-  end
-  
-  def followers
-    @user = User.find(params[:id])
-    @followers = @user.followers.page(params[:page]).per(15)
-    counts(@user)
+  def show
+    @books = @user.books.where(status: ['読書中', nil]).order(id: :desc).page(params[:page]).per(15)
+    this_month_books(@user)
   end
   
   def will_read
-    @user = User.find(params[:id])
     @books = @user.books.where(status: '読みたい').order(id: :desc).page(params[:page]).per(15)
-    counts(@user)
     this_month_books(@user)
   end
   
   def read
-    @user = User.find(params[:id])
     @books = @user.books.where(status: '読了').order(id: :desc).page(params[:page]).per(15)
-    counts(@user)
     this_month_books(@user)
+  end
+  
+  def followings
+    @followings = @user.followings.page(params[:page]).per(15)
+  end
+  
+  def followers
+    @followers = @user.followers.page(params[:page]).per(15)
   end
   
   def ranking
@@ -76,23 +80,15 @@ class UsersController < ApplicationController
     @rank_hash = rank_hash.sort_by { |_, v| -v }.to_h
   end
   
-  def edit
-  end
-  
-  def update
-    if current_user.update(user_params)
-      flash[:success] = 'ユーザー情報が編集されました'
-      redirect_to current_user
-    else
-      flash.now[:danger] = 'ユーザー情報は編集されませんでした'
-      render :edit
-    end
-  end
-  
   private
   
+  def set_user
+    @user = User.find(params[:id])
+    counts(@user)
+  end
+  
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :now_password)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
   
   def this_month_books(user)

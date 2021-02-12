@@ -1,17 +1,19 @@
 class CommentsController < ApplicationController
+  before_action :require_user_logged_in
   before_action :correct_user, only: [:destroy]
   
   def create
     @comment = current_user.comments.build(comment_params)
+    @book = Book.find(comment_params[:book_id])
     if @comment.save
       flash[:success] = 'リプライしました'
-      redirect_back(fallback_location: root_path)
+      redirect_to book_url(@book)
     else
       flash.now[:danger] = 'リプライできませんでした'
-      @user = @comment.user
-      @books = @user.books.order(id: :desc).page(params[:page]).per(6)
-      counts(@user)
-      render 'users/show'
+      if @book.page.present? && @book.nowpage.present?
+        @progress = (@book.nowpage*100) / @book.page
+      end
+      render 'books/show'
     end
   end
 

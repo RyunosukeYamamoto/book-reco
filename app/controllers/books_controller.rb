@@ -12,7 +12,7 @@ class BooksController < ApplicationController
     
     if @book.save
       flash[:success] = '本棚に追加!'
-      redirect_to root_url
+      redirect_to current_user
     else
       @books = current_user.feed_books.order(id: :desc).page(params[:page]).per(15)
       flash.now[:danger] = '本の追加に失敗しました'
