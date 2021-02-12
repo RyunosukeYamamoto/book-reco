@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, except: %i[new create]
-  before_action :set_user, only: %i[show followings followers will_read read]
+  before_action :require_user_logged_in, except: [:new, :create]
+  before_action :set_user, only: [:show, :followings, :followers, :will_read, :read]
 
   def index
     @users = if params[:search].present?
-               User.where(name: params[:search]).order(id: :desc).page(params[:page]).per(15)
+               User.where('name LIKE(?)', "%#{params[:search]}%").order(id: :desc).page(params[:page]).per(15)
              else
                User.order(id: :desc).page(params[:page]).per(15)
              end
@@ -88,13 +88,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
-  end
-
-  def this_month_books(user)
-    first_of_month = Date.today.beginning_of_month
-    end_of_month = Date.today.end_of_month
-    @this_month = Date.today.month
-
-    @this_month_books = user.books.where(date: first_of_month..end_of_month).order(id: :desc).page(params[:page]).per(15)
   end
 end

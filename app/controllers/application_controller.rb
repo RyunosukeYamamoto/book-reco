@@ -15,4 +15,12 @@ class ApplicationController < ActionController::Base
     @count_followings = user.followings.count
     @count_followers = user.followers.count
   end
+  
+  def this_month_books(user)
+    first_of_month = Date.today.beginning_of_month
+    end_of_month = Date.today.end_of_month
+    @this_month = Date.today.month
+
+    @this_month_books = user.books.where(date: first_of_month..end_of_month).order(id: :desc).page(params[:page]).per(15)
+  end
 end

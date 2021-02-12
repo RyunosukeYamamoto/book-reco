@@ -1,75 +1,29 @@
 <% if logged_in? %>
-  <h3>書籍の新規登録</h3>
   <div class="row">
-    <div class="col-md-8">
-      <%= render 'layouts/error_messages', model: @book %>
-      <div class="search">
-        <h4>書籍の検索</h4>
-        <%= form_with(url: '/', method: :get, local: true) do |f| %>
-          <div class="input-group">
-            <%= f.text_field :keyword, class: "form-control", placeholder: "キーワード検索" %>
-            <span class="input-group-btn">
-              <%= f.submit "検索", class: "btn btn-success" %>
-            </span>
-          </div>
-        <% end %>
-        
-        <% if @books_api.present? %>
-          <h4>検索結果</h4>
-          <% @books_api.each do |book| %>
-            <img src="<%= book[1] %>" width="40" vspace="2">
-            <%= link_to book[0], controller: "toppages", action: "index", title: book[0], img: book[1],  code: book[2] %>
-            <br>
-          <% end %>
-        <% end %>
-      
-        <% if @title.present? %>
-          <% if in_bookshelf?(@code) %>
-            <div class="alert alert-warning" role="alert">この本は既に本棚にあります</div>
-          <% end %>
-          <%= form_with model: @book, local: true do |f| %>
-            <div class="form-group">
-              <%= f.label :title %>
-              <%= f.text_field :title, class: 'form-control', value: "#{@title}", :readonly => true %>
-            </div>
-            
-            <%= f.hidden_field :code, class: 'form-control', value: "#{@code}" %>
-            
-            <%= f.hidden_field :img, value: "#{@img}" %>
-            
-            <div class="form-group">
-              <%= f.label :page, 'ページ数' %>
-              <%= f.number_field :page, class: 'form-control' %>
-            </div>
-            
-            <div class="form-group">
-              <%= f.select :status, [["読みたい", "読みたい"], ["読書中", "読書中"], ["読了", "読了"]], selected: "読書中", class: 'form-control' %>
-            </div>
-            
-            <div class="form-group">
-              <%= f.label :date, '読了日' %>
-              <%= f.date_select :date, include_blank: true %>
-            </div>
-            
-            <%= f.submit "登録", class: "btn btn-primary" %>
-          <% end %>
-        <% end %>
-      </div>
-      <%= link_to "独自の書籍を登録", new_book_path, class: "btn btn-light mt-3" %>
+    <div class="col-md-4">
+      <h4><%= link_to current_user.name, current_user %></h4>
+      <h5>本棚の本<%= @count_books %>冊</h5>
+      <h5>読書中の本<%= @count_reading %>冊</h5>
+      <h5>読みたい本<%= @count_will_read %>冊</h5>
+      <h5>読んだ本<%= @count_read %>冊</h5>
+      <h5><%= @this_month %>月の読んだ本<%= @this_month_books.count %>冊</h5>
     </div>
-    
-    
-    <div class="col-md-4 timeline">
-      <h4 class="mt-3">タイムライン</h4>
+  
+    <div class="col-md-8 timeline">
+      <h4>フォロー中ユーザーの読書記録</h4>
       <%= render 'books/books', books: @books %>
     </div>
   </div>
-  
-
 <% else %>
-  <div class="center jumbotron">
-    <div class="text-center">
-      <h1>ようこそBookRecordへ</h1>
+  <div class="row">
+    <div class="col-md-8 jumbotron">
+      <div class="text-center">
+        <h1>ようこそBookRecordへ</h1>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h4>新規登録</h4>
+      <%= render 'users/form', user: @user %>
     </div>
   </div>
 <% end %>

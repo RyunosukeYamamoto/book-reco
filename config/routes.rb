@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'users#new'
 
-  resources :users, only: %i[index show create destroy edit update] do
+  resources :users, except: [:new] do
     member do
       get :followings
       get :followers
@@ -19,9 +19,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :books, only: %i[show create edit update destroy new] do
+  resources :books, except: [:index] do
     member do
       get :book
+    end
+    collection do
+      get :search
     end
   end
 

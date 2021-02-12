@@ -8,12 +8,21 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <% if logged_in? %>
-          <li class="nav-item"><%= link_to 'ユーザー', users_path, class: 'nav-link' %></li>
+          <%= form_with(url: search_books_path, method: :get, local: true) do |f| %>
+            <div class="input-group">
+              <%= f.text_field :keyword, class: "form-control", placeholder: "書籍の検索" %>
+              <span class="input-group-btn">
+                <%= f.submit "検索", class: "btn btn-success" %>
+              </span>
+            </div>
+          <% end %>
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><%= current_user.name %></a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">メニュー</a>
             <ul class="dropdown-menu dropdown-menu-right">
               <li class="dropdown-item"><%= link_to 'マイページ', user_path(current_user) %></li>
               <li class="dropdown-item"><%= link_to '月間ランキング', ranking_users_path %></li>
+              <li class="dropdown-item"><%= link_to '本の追加', search_books_path %></li>
+              <li class="dropdown-item"><%= link_to 'ユーザー', users_path %></li>
               <li class="dropdown-divider"></li>
               <li class="dropdown-item"><%= link_to 'ログアウト', logout_path, method: :delete %></li>
             </ul>

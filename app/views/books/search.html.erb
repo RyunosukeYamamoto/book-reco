@@ -1,0 +1,60 @@
+    <div class="col-md-8">
+      <%= render 'layouts/error_messages', model: @book %>
+      <div class="search">
+        
+        <%= form_with(url: search_books_path, method: :get, local: true) do |f| %>
+          <div class="input-group">
+            <%= f.text_field :keyword, class: "form-control", placeholder: "書籍の検索" %>
+            <span class="input-group-btn">
+              <%= f.submit "検索", class: "btn btn-success" %>
+            </span>
+          </div>
+        <% end %>
+        
+        <% if @books_api.present? %>
+          <h4>検索結果</h4>
+          <% @books_api.each do |book| %>
+            <div>
+              <img src="<%= book[1] %>" width="40" vspace="2">
+              <%= link_to book[0], controller: "books", action: "search", title: book[0], img: book[1],  code: book[2] %>
+            </div>
+          <% end %>
+        <% end %>
+      
+        <% if @title.present? %>
+          <% if in_bookshelf?(@code) %>
+            <div class="alert alert-warning" role="alert">この本は既に本棚にあります</div>
+          <% end %>
+          <%= form_with model: @book, local: true do |f| %>
+            <div class="form-group">
+              <%= f.label :title %>
+              <%= f.text_field :title, class: 'form-control', value: "#{@title}", :readonly => true %>
+            </div>
+            
+            <%= f.hidden_field :code, class: 'form-control', value: "#{@code}" %>
+            
+            <%= f.hidden_field :img, value: "#{@img}" %>
+            
+            <div class="form-group">
+              <%= f.label :page, 'ページ数' %>
+              <%= f.number_field :page, class: 'form-control' %>
+            </div>
+            
+            <div class="form-group">
+              <%= f.select :status, [["読みたい", "読みたい"], ["読書中", "読書中"], ["読了", "読了"]], selected: "読書中", class: 'form-control' %>
+            </div>
+            
+            <div class="form-group">
+              <%= f.label :date, '読了日' %>
+              <%= f.date_select :date, include_blank: true %>
+            </div>
+            
+            <%= f.submit "登録", class: "btn btn-primary" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <%= link_to "独自の書籍を登録", new_book_path, class: "btn btn-light mt-3" %>
+    </div>
