@@ -1,15 +1,12 @@
 class ApplicationController < ActionController::Base
-  
   include SessionsHelper
-  
+
   private
-  
+
   def require_user_logged_in
-    unless logged_in?
-      redirect_to login_url
-    end
+    redirect_to login_url unless logged_in?
   end
-  
+
   def counts(user)
     @count_books = user.books.count
     @count_will_read = user.books.where(status: '読みたい').count
