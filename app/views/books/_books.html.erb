@@ -9,9 +9,6 @@
             <img src="<%= book.img %>" width="100" vspace="2">
           <% end %>
           <%= book.impression %><br>
-          <% if current_user == book.user %>
-            <%= link_to "削除", book, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
-          <% end %>
         </div>
       </li>
     <% end %>

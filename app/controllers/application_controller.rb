@@ -23,4 +23,20 @@ class ApplicationController < ActionController::Base
 
     @this_month_books = user.books.where(date: first_of_month..end_of_month).order(id: :desc).page(params[:page]).per(15)
   end
+  
+  def last_month_books(user)
+    first_of_month = Date.today.last_month.beginning_of_month
+    end_of_month = Date.today.last_month.end_of_month
+    @last_month = Date.today.last_month.month
+
+    @last_month_books = user.books.where(date: first_of_month..end_of_month)
+  end
+  
+  def last_last_month_books(user)
+    first_of_month = Date.today.last_month.last_month.beginning_of_month
+    end_of_month = Date.today.last_month.last_month.end_of_month
+    @last_last_month = Date.today.last_month.last_month.month
+
+    @last_last_month_books = user.books.where(date: first_of_month..end_of_month)
+  end
 end

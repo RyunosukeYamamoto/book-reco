@@ -1,15 +1,17 @@
 <% if logged_in? %>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 border">
       <h4><%= link_to current_user.name, current_user %></h4>
       <h5>本棚の本<%= @count_books %>冊</h5>
       <h5>読書中の本<%= @count_reading %>冊</h5>
       <h5>読みたい本<%= @count_will_read %>冊</h5>
       <h5>読んだ本<%= @count_read %>冊</h5>
       <h5><%= @this_month %>月の読んだ本<%= @this_month_books.count %>冊</h5>
+      
+      <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
     </div>
   
-    <div class="col-md-8 timeline">
+    <div class="col-md-8 border timeline">
       <h4>フォロー中ユーザーの読書記録</h4>
       <%= render 'books/books', books: @books %>
     </div>
