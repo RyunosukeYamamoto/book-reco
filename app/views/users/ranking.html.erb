@@ -1,10 +1,22 @@
-<h4>今月の読了数ランキング(<%= @this_month %>月)</h4>
+<h3>今月の読了数ランキング(<%= @this_month %>月)</h3>
 <% count = 0 %>
-<% @rank_hash.each do |user, book_count| %>
-  <% count += 1 unless book_count == @one_above_count %>
-  <h5><%= count %>位|<%= link_to user.name, user_path(user) %>さん&gt;<%= book_count %>冊</h5>
-  <% if count >= 10 %>
-    <% break %>
+<ul>
+  <% @rank_hash.each do |user, book_count| %>
+    <% count += 1 unless book_count == @one_above_count %>
+    <li style="list-style:none;">
+      <h4><%= count %>位|<%= link_to user.name, user_path(user) %>&gt;<%= book_count %>冊</h4>
+      <% if user.books.present? %>
+      <h5>最近追加した本</h5>
+        <%= user.books.last.title %><br>
+        <% if user.books.last.img.present? %>
+          <img src="<%= user.books.last.img %>" width="100" vspace="2">
+        <% end %>
+        <%= user.books.last.impression %><br>
+      <% end %>
+    </li>
+    <% if count >= 10 %>
+      <% break %>
+    <% end %>
+    <% @one_above_count = book_count %>
   <% end %>
-  <% @one_above_count = book_count %>
-<% end %>
+</ul>

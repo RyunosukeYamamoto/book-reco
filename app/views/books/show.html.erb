@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-8">
-    <h3><%= @book.user.name %>の本棚&gt;
+    <h3><%= link_to @book.user.name, @book.user %>の本棚&gt;
     <% if @book.code.present? %>
       <%= link_to @book.title, book_book_path(@book.id) %></h3>
     <% else %>
@@ -8,7 +8,7 @@
     <% end %>
     
     <% if @book.img.present? %>
-      <img src="<%= @book.img %>" width="80" vspace="2">
+      <img src="<%= @book.img %>" width="120" vspace="2">
     <% end %>
     
     <h4>感想: <%= @book.impression %></h4>

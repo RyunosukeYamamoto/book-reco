@@ -25,5 +25,7 @@
     <% end %>
     <h4>今月(<%= @this_month %>月)の読了本は<%= @this_month_books.count %>冊です</h4>
     <%= render 'books/books', books: @this_month_books %>
+    <h4>最近の月別読書数</h4>
+    <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
   </div>
 </div>

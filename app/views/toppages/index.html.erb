@@ -1,5 +1,12 @@
 <% if logged_in? %>
   <div class="row">
+    <div class="top-image">
+      <img src="/assets/books.jpg" alt="本の画像" width="100%">
+      <div class="sentence" style="text-align: center;">
+        <p>読書を始めよう</p>
+        <%= link_to "本を探す", search_books_path, class: "btn btn-success", style: "color: white;" %>
+      </div>
+    </div>
     <div class="col-md-4 border">
       <h4><%= link_to current_user.name, current_user %></h4>
       <h5>本棚の本<%= @count_books %>冊</h5>
@@ -11,7 +18,7 @@
       <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
     </div>
   
-    <div class="col-md-8 border timeline">
+    <div class="col-md-8 timeline">
       <h4>フォロー中ユーザーの読書記録</h4>
       <%= render 'books/books', books: @books %>
     </div>
