@@ -24,17 +24,10 @@
     </div>
   </div>
 <% else %>
-  <div class="row">
-    <div class="col-md-8 top-image">
-      <img src="/assets/books.jpg" alt="本の画像" width="100%">
-      <div class="sentence" style="text-align: center;">
-        <p>読書を始めよう</p>
-      </div>
-    </div>
-    
-    <div class="col-md-4">
-      <h4>新規登録</h4>
-      <%= render 'users/form', user: @user %>
+  <div class="top-image">
+    <img src="/assets/books.jpg" alt="本の画像" width="100%">
+    <div class="sentence" style="text-align: center;">
+      <p>読書を始めよう</p>
     </div>
   </div>
 <% end %>
