@@ -1,26 +1,27 @@
 <% if logged_in? %>
-  <div class="row">
-    <div class="top-image">
-      <img src="/assets/books.jpg" alt="本の画像" width="100%">
-      <div class="sentence" style="text-align: center;">
-        <p>読書を始めよう</p>
-        <%= link_to "本を探す", search_books_path, class: "btn btn-success", style: "color: white;" %>
-      </div>
+  <div class="top-image">
+    <img src="/assets/books.jpg" alt="本の画像" width="100%">
+    <div class="sentence" style="text-align: center;">
+      <%= link_to "本を探す", search_books_path, class: "btn btn-secondary pt-2 pb-2 pl-4 pr-4", style: "color: white;" %>
     </div>
-    <div class="col-md-4 border">
-      <h4><%= link_to current_user.name, current_user %></h4>
-      <h5>本棚の本<%= @count_books %>冊</h5>
-      <h5>読書中の本<%= @count_reading %>冊</h5>
-      <h5>読みたい本<%= @count_will_read %>冊</h5>
-      <h5>読んだ本<%= @count_read %>冊</h5>
-      <h5><%= @this_month %>月の読んだ本<%= @this_month_books.count %>冊</h5>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 border">
+        <h4><%= link_to current_user.name, current_user %></h4>
+        <h5>本棚の本 <span class="badge badge-pill badge-success"><%= @count_books %>冊</span></h5>
+        <h5><%= link_to "読書中の本", current_user %> <span class="badge badge-pill badge-success"><%= @count_reading %>冊</span></h5>
+        <h5><%= link_to "読みたい本", will_read_user_path(current_user) %> <span class="badge badge-pill badge-success"><%= @count_will_read %>冊</span></h5>
+        <h5><%= link_to "読んだ本", read_user_path(current_user) %> <span class="badge badge-pill badge-success"><%= @count_read %>冊</span></h5>
+        <h5><%= @this_month %>月の読んだ本 <span class="badge badge-pill badge-success"><%= @this_month_books.count %>冊</span></h5>
       
-      <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
-    </div>
+        <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
+      </div>
   
-    <div class="col-md-8 timeline">
-      <h4>フォロー中ユーザーの読書記録</h4>
-      <%= render 'books/books', books: @books %>
+      <div class="col-md-8 timeline">
+        <h4>フォロー中ユーザーの読書記録</h4>
+        <%= render 'books/books', books: @books %>
+      </div>
     </div>
   </div>
 <% else %>

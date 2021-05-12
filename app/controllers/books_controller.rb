@@ -41,7 +41,7 @@ class BooksController < ApplicationController
   end
 
   def book
-    @books_by_code = Book.where(code: @book.code)
+    @books_by_code = Book.where(code: @book.code).order(id: :desc).page(params[:page]).per(10)
     @for_submit = current_user.books.build
   end
   

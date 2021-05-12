@@ -1,22 +1,32 @@
-<%= form_with model: @book, local: true do |f| %>
-  <div class="form-group">
-    <%= f.label :title %>
-    <%= f.text_field :title, class: 'form-control' %>
+<div class="container pt-4">
+  <div class="text-center">
+    <h3>本を追加</h3>
   </div>
+  
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <%= form_with model: @book, local: true do |f| %>
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, class: 'form-control' %>
+        </div>
             
-  <div class="form-group">
-    <%= f.label :page, 'ページ数' %>
-    <%= f.number_field :page, class: 'form-control' %>
+        <div class="form-group">
+          <%= f.label :page, 'ページ数' %>
+          <%= f.number_field :page, class: 'form-control' %>
+        </div>
+            
+        <div class="form-group">
+          <%= f.select :status, [["読みたい", "読みたい"], ["読書中", "読書中"], ["読了", "読了"]], selected: "読書中", class: 'form-control' %>
+        </div>
+            
+        <div class="form-group">
+          <%= f.label :date, '読了日' %>
+          <%= f.date_select :date, include_blank: true %>
+        </div>
+            
+        <%= f.submit "本棚に追加", class: "btn btn-secondary" %>
+      <% end %>
+    </div>
   </div>
-            
-  <div class="form-group">
-    <%= f.select :status, [["読みたい", "読みたい"], ["読書中", "読書中"], ["読了", "読了"]], selected: "読書中", class: 'form-control' %>
-  </div>
-            
-  <div class="form-group">
-    <%= f.label :date, '読了日' %>
-    <%= f.date_select :date, include_blank: true %>
-  </div>
-            
-  <%= f.submit "登録", class: "btn btn-primary" %>
-<% end %>
+</div>

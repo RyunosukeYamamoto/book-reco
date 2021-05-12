@@ -1,22 +1,40 @@
-<h3>今月の読了数ランキング(<%= @this_month %>月)</h3>
-<% count = 0 %>
-<ul>
-  <% @rank_hash.each do |user, book_count| %>
-    <% count += 1 unless book_count == @one_above_count %>
-    <li style="list-style:none;">
-      <h4><%= count %>位|<%= link_to user.name, user_path(user) %>&gt;<%= book_count %>冊</h4>
-      <% if user.books.present? %>
-      <h5>最近追加した本</h5>
-        <%= user.books.last.title %><br>
-        <% if user.books.last.img.present? %>
-          <img src="<%= user.books.last.img %>" width="100" vspace="2">
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h3>今月の読了数ランキング(<%= @this_month %>月)</h3>
+      <% count = 0 %>
+      
+      <ul class="list-unstyled mt-3">
+        <% @rank_hash.each do |user, book_count| %>
+          <% count += 1 unless book_count == @one_above_count %>
+          <% if count >= 11 %>
+            <% break %>
+          <% end %>
+          <li class="post">
+            <h4>
+              <%= count %>位 <img class="mr-2 rounded" src="<%= gravatar_url(user, { size: 50 }) %>" alt="">
+              <%= link_to user.name, user_path(user) %> <span class="badge badge-info"><%= book_count %>冊</span>
+            </h4>
+            <% if user.books.present? %>
+              <div class="post-book">
+                <h5>最近追加した本</h5>
+                <div>
+                  <%= user.books.last.title %>
+                </div>
+                <div>
+                  <% if user.books.last.img.present? %>
+                    <img src="<%= user.books.last.img %>" width="100" vspace="2">
+                  <% end %>
+                  <%= user.books.last.impression %><br>
+                </div>
+                <%= link_to "", user.books.last, class: "book_link" %>
+              </div>
+            <% end %>
+          </li>
+          <hr>
+          <% @one_above_count = book_count %>
         <% end %>
-        <%= user.books.last.impression %><br>
-      <% end %>
-    </li>
-    <% if count >= 10 %>
-      <% break %>
-    <% end %>
-    <% @one_above_count = book_count %>
-  <% end %>
-</ul>
+      </ul>
+    </div>
+  </div>
+</div>

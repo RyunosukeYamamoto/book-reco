@@ -49,20 +49,14 @@ class UsersController < ApplicationController
 
   def show
     @books = @user.books.where(status: ['読書中', nil]).order(id: :desc).page(params[:page]).per(15)
-    this_month_books(@user)
-    last_month_books(@user)
-    last_last_month_books(@user)
-    @data_for_graph = { "#{@last_last_month}月(先々月)": @last_last_month_books.count, "#{@last_month}月(先月)": @last_month_books.count, "#{@this_month}月(今月)": @this_month_books.count }
   end
 
   def will_read
     @books = @user.books.where(status: '読みたい').order(id: :desc).page(params[:page]).per(15)
-    this_month_books(@user)
   end
 
   def read
     @books = @user.books.where(status: '読了').order(id: :desc).page(params[:page]).per(15)
-    this_month_books(@user)
   end
 
   def followings
@@ -87,6 +81,10 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
     counts(@user)
+    this_month_books(@user)
+    last_month_books(@user)
+    last_last_month_books(@user)
+    @data_for_graph = { "#{@last_last_month}月(先々月)": @last_last_month_books.count, "#{@last_month}月(先月)": @last_month_books.count, "#{@this_month}月(今月)": @this_month_books.count }
   end
 
   def user_params

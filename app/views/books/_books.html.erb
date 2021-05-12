@@ -1,15 +1,26 @@
 <% if books.any? %>
-  <ul>
+  <ul class="list-unstyled">
     <% books.each do |book| %>
-      <li style="list-style: none;", class="border post">
-        <%= book.user.name %><br>
-        <%= book.title %><br>
-        <%= book.status %>
-        <%= link_to "", book, class: "book_link" %><br>
-        <% if book.img.present? %>
-          <img src="<%= book.img %>" width="100" vspace="2">
-        <% end %>
-        <%= book.impression %><br>
+      <li class="post">
+        <div>
+          <img class="mr-2 rounded" src="<%= gravatar_url(book.user, { size: 50 }) %>" alt="">
+          <%= link_to book.user.name, book.user %>
+        </div>
+        <div class="post-book">
+          <div>
+            <%= book.title %>
+          </div>
+          <div>
+            <% if book.img.present? %>
+              <img src="<%= book.img %>" width="100" vspace="2">
+            <% end %>
+            <%= book.impression %>
+          </div>
+          <div>
+            <span class="badge badge-primary"><%= book.status %></span>
+          </div>
+          <%= link_to "", book, class: "book_link" %>
+        </div>
       </li>
     <% end %>
   </ul>

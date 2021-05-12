@@ -1,31 +1,32 @@
-<h3><%= user.name %>の本棚</h3>
-<%= render 'relationships/follow_button', user: user %>
-<h4><%= @count_books %>冊の本</h4>
-<div class="row">
-  <div class="col-sm-8">
-    <ul class="nav nav-tabs nav-justified mb-3">
-      <li class="nav-item"><a href="<%= user_path(user) %>" class="nav-link <%= 'active' if %w[user will_read_user read_user].any? { |name| current_page?(send("#{name}_path")) } %>">本  <span class="badge badge-secondary"><%= @count_books %></span></a></li>
-      <li class="nav-item"><a href="<%= followings_user_path(user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(user)) %>">フォロー  <span class="badge badge-secondary"><%= @count_followings %></span></a></li>
-      <li class="nav-item"><a href="<%= followers_user_path(user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(user)) %>">フォロワー  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
-    </ul>
-  
-    <ul class="nav nav-tabs nav-justified mb-3">
-      <li class="nav-item"><a href="<%= user_path(user) %>" class="nav-link <%= 'active' if current_page?(user_path(user)) %>">読書中  <span class="badge badge-secondary"><%= @count_reading %></span></a></li>
-      <li class="nav-item"><a href="<%= will_read_user_path(user) %>" class="nav-link <%= 'active' if current_page?(will_read_user_path(user)) %>">読みたい本  <span class="badge badge-secondary"><%= @count_will_read %></span></a></li>
-      <li class="nav-item"><a href="<%= read_user_path(user) %>" class="nav-link <%= 'active' if current_page?(read_user_path(user)) %>">読了  <span class="badge badge-secondary"><%= @count_read %></span></a></li>
-    </ul>
-  
-  
-    <%= render 'books/books', books: books %>
-  </div>
-
-  <div class="col-sm-4">
+<div class="container pt-4">
+  <h3><%= user.name %>のページ
     <% if user == current_user %>
-      <h4><%= link_to 'ユーザー情報を編集', edit_user_path(current_user) %></h4>
+      <small><small><%= link_to 'ユーザー情報を編集', edit_user_path(current_user) %></small></small>
     <% end %>
-    <h4>今月(<%= @this_month %>月)の読了本は<%= @this_month_books.count %>冊です</h4>
-    <%= render 'books/books', books: @this_month_books %>
-    <h4>最近の月別読書数</h4>
-    <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
+  </h3>
+  <%= render 'relationships/follow_button', user: user %>
+  <div class="row pt-4">
+    <div class="col-md-4">
+      <h4>今月(<%= @this_month %>月)の読了本は <span class="badge badge-pill badge-success"><%= @this_month_books.count %>冊</span></h4>
+      <h4>最近の月別読書数</h4>
+      <%= column_chart @data_for_graph, height: "200px", colors: ["#e2c29b"] %>
+      
+      <%= render 'books/books', books: @this_month_books %>
+    </div>
+    
+    <div class="col-md-8">
+      <ul class="nav nav-tabs nav-justified mb-3">
+        <li class="nav-item"><a href="<%= user_path(user) %>" class="nav-link <%= 'active' if %w[user will_read_user read_user].any? { |name| current_page?(send("#{name}_path")) } %>">本  <span class="badge badge-secondary"><%= @count_books %></span></a></li>
+        <li class="nav-item"><a href="<%= followings_user_path(user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(user)) %>">フォロー  <span class="badge badge-secondary"><%= @count_followings %></span></a></li>
+        <li class="nav-item"><a href="<%= followers_user_path(user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(user)) %>">フォロワー  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
+      </ul>
+      
+      <ul class="nav nav-tabs nav-justified mb-3">
+        <li class="nav-item"><a href="<%= user_path(user) %>" class="nav-link <%= 'active' if current_page?(user_path(user)) %>">読書中  <span class="badge badge-secondary"><%= @count_reading %></span></a></li>
+        <li class="nav-item"><a href="<%= will_read_user_path(user) %>" class="nav-link <%= 'active' if current_page?(will_read_user_path(user)) %>">読みたい本  <span class="badge badge-secondary"><%= @count_will_read %></span></a></li>
+        <li class="nav-item"><a href="<%= read_user_path(user) %>" class="nav-link <%= 'active' if current_page?(read_user_path(user)) %>">読了  <span class="badge badge-secondary"><%= @count_read %></span></a></li>
+      </ul>
+      <%= render 'books/books', books: books %>
+    </div>
   </div>
 </div>
